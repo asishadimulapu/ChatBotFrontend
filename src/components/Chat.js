@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import API from '../api';
 import ReactMarkdown from 'react-markdown';
-import './Chat.css';
+import '../styles/Chat.css';
 
 const Chat = () => {
   const [prompt, setPrompt] = useState('');
   const [chats, setChats] = useState([]);
   const [loading, setLoading] = useState(false);
+  const chatBoxRef = useRef(null); // to scroll
 
   // Fetch chats only if token exists
   const fetchChats = async () => {
@@ -24,6 +25,13 @@ const Chat = () => {
     fetchChats();
   }, []);
 
+  // Scroll chat box to bottom whenever chats change
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [chats]);
+
   // Send a new message
   const handleSend = async () => {
     if (!prompt.trim()) return;
@@ -31,7 +39,8 @@ const Chat = () => {
     setLoading(true);
     try {
       const res = await API.post('/chats', { prompt });
-      setChats([res.data, ...chats]);
+      // Append new chat at the end of the array
+      setChats([...chats, res.data]);
       setPrompt('');
     } catch (err) {
       alert(err.response?.data?.msg || 'Error sending message');
@@ -52,7 +61,7 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      <div className="chat-box">
+      <div className="chat-box" ref={chatBoxRef}>
         {chats.map((chat) => (
           <div key={chat._id} className="chat-item">
             <div className="chat-user">
@@ -74,8 +83,11 @@ const Chat = () => {
           onChange={e => setPrompt(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleSend()}
           placeholder="Ask something..."
+          disabled={loading}
         />
-        <button onClick={handleSend} disabled={loading}>Send</button>
+        <button onClick={handleSend} disabled={loading || !prompt.trim()}>
+          {loading ? 'Sending...' : 'Send'}
+        </button>
       </div>
     </div>
   );
