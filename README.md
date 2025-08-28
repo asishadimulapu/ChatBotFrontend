@@ -1,6 +1,6 @@
 # ChatBotGemini Frontend
 
-[![React](https://img.shields.io/badge/React-18.x-blue.svg)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-19.x-blue.svg)](https://reactjs.org/)
 [![Lucide React](https://img.shields.io/badge/Lucide_React-Icons-orange.svg)](https://lucide.dev/)
 [![Axios](https://img.shields.io/badge/Axios-HTTP_Client-green.svg)](https://axios-http.com/)
 
@@ -49,6 +49,7 @@ ChatBotFrontend/
 │   ├── App.css             # Global application styles
 │   ├── index.js            # Application entry point
 │   └── index.css           # Global CSS styles
+├── .env.example            # Environment variables template
 ├── package.json            # Dependencies and scripts
 ├── vercel.json             # Vercel deployment configuration
 └── README.md              # Project documentation
@@ -58,10 +59,11 @@ ChatBotFrontend/
 
 | Category | Technology | Version |
 |----------|------------|---------|
-| **Framework** | React | 18.x |
+| **Framework** | React | 19.x |
 | **HTTP Client** | Axios | Latest |
 | **Icons** | Lucide React | Latest |
 | **Markdown** | React Markdown | Latest |
+| **Routing** | React Router DOM | Latest |
 | **Styling** | CSS3 | - |
 | **Build Tool** | Create React App | Latest |
 | **Deployment** | Vercel | - |
@@ -82,13 +84,21 @@ git clone https://github.com/asishadimulapu/ChatBotFrontend.git
 cd ChatBotFrontend
 ```
 
+> **Note**: Replace the repository URL with your actual frontend repository URL if different.
+
 ### 2. Install Dependencies
 ```bash
 npm install
 ```
 
 ### 3. Environment Configuration
-Create a `.env` file in the root directory:
+Copy the example environment file and configure it:
+
+```bash
+cp .env.example .env
+```
+
+Then edit the `.env` file with your settings:
 
 ```env
 # Backend API Configuration
@@ -180,6 +190,12 @@ vercel --prod
 ```env
 REACT_APP_API_URL=https://chatbotgemini-6kem.onrender.com/api
 GENERATE_SOURCEMAP=false
+```
+
+### Environment Variables for Development
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+GENERATE_SOURCEMAP=true
 ```
 
 ### Alternative Deployment Options
