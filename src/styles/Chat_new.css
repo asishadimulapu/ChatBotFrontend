@@ -119,11 +119,14 @@ body {
   transition: background-color var(--transition-normal);
 }
 
-/* Search Header */
-.search-header {
+/* Navigation */
+.chat-nav {
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -131,42 +134,64 @@ body {
   transition: all var(--transition-normal);
 }
 
-.search-container {
-  max-width: 600px;
-  margin: 0 auto;
+.nav-left {
   display: flex;
   align-items: center;
-  gap: 1rem;
 }
 
-.search-input-wrapper {
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--text-primary);
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.brand-text {
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-center {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 2rem;
+}
+
+.nav-search {
   position: relative;
   display: flex;
   align-items: center;
-  flex: 1;
 }
 
-.search-icon {
-  position: absolute;
-  left: 0.75rem;
-  color: var(--text-muted);
-  z-index: 1;
-}
-
-.search-input {
+.nav-search .search-input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  padding-left: 2.5rem;
+  padding: 0.5rem 1rem;
   padding-right: 2.5rem;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   background: var(--bg-secondary);
   color: var(--text-primary);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   transition: all var(--transition-fast);
 }
 
-.search-input:focus {
+.nav-search .search-input:focus {
   outline: none;
   border-color: var(--primary-500);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
@@ -182,7 +207,6 @@ body {
   padding: 0.25rem;
   border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
-  font-size: 1rem;
 }
 
 .search-close:hover {
@@ -190,39 +214,79 @@ body {
   background: rgba(239, 68, 68, 0.1);
 }
 
-.clear-history-btn {
-  margin-left: 0.75rem;
-  padding: 0.5rem 1rem;
-  background: var(--error-500);
-  color: white;
-  border: none;
-  border-radius: var(--radius-lg);
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+.nav-right {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.clear-history-btn:hover {
-  background: #dc2626;
+.nav-btn {
+  padding: 0.5rem;
+  border: none;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+.nav-btn:hover {
+  background: var(--primary-500);
+  color: white;
   transform: translateY(-1px);
 }
 
-/* Spinner Animations */
-.typing-spinner,
-.send-spinner {
-  animation: spin 1s linear infinite;
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--bg-tertiary);
+  transition: all var(--transition-fast);
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.logout-btn {
+  padding: 0.375rem 0.75rem;
+  background: var(--error-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
 }
 
 /* Main Chat Area */
@@ -230,7 +294,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 80px); /* Adjusted for search header */
+  height: calc(100vh - 73px);
 }
 
 .messages-container {
@@ -272,9 +336,9 @@ body {
 }
 
 .empty-icon {
+  font-size: 4rem;
   margin-bottom: 1.5rem;
   opacity: 0.7;
-  color: var(--text-muted);
 }
 
 .empty-state h2 {
