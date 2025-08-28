@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
+import API from '../api';
 import { 
   Search, 
   X, 
@@ -41,16 +42,10 @@ const Chat = () => {
 
   const loadChatHistory = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/chats', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await API.get('/chats');
 
-      if (response.ok) {
-        const chats = await response.json();
+      if (response.data) {
+        const chats = response.data;
         // Convert backend chat format to frontend message format
         const formattedMessages = [];
         chats.forEach(chat => {
@@ -103,25 +98,13 @@ const Chat = () => {
     setError('');
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/chats', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ prompt: messageToSend })
+      const response = await API.post('/chats', { 
+        prompt: messageToSend 
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
-
-      const data = await response.json();
-      
       const botMessage = {
         id: Date.now() + 1,
-        text: data.response,
+        text: response.data.response,
         sender: 'bot',
         timestamp: new Date()
       };
