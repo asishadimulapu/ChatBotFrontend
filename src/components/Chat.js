@@ -294,8 +294,8 @@ const Chat = () => {
                     <div className="message-time">
                       {formatTime(message.timestamp)}
                     </div>
-                    <div className="message-actions">
-                      {message.sender === 'bot' && (
+                    {message.sender === 'bot' && (
+                      <div className="message-actions">
                         <button 
                           className="action-btn copy-btn"
                           onClick={() => copyMessage(message.text)}
@@ -304,16 +304,16 @@ const Chat = () => {
                           <Copy size={12} />
                           Copy
                         </button>
-                      )}
-                      <button 
-                        className="action-btn delete-btn"
-                        onClick={() => deleteMessage(message.id)}
-                        title="Delete entire conversation"
-                      >
-                        <Trash2 size={12} />
-                        Delete
-                      </button>
-                    </div>
+                        <button 
+                          className="action-btn delete-btn"
+                          onClick={() => deleteMessage(message.id)}
+                          title="Delete entire conversation"
+                        >
+                          <Trash2 size={12} />
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
