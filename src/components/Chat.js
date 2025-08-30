@@ -154,7 +154,26 @@ const Chat = () => {
   };
 
   const deleteMessage = (messageId) => {
-    setMessages(prev => prev.filter(msg => msg.id !== messageId));
+    if (!window.confirm('Are you sure you want to delete this entire conversation?')) {
+      return;
+    }
+
+    // Extract the chat ID from the message ID
+    let chatId;
+    if (messageId.startsWith('user-')) {
+      chatId = messageId.replace('user-', '');
+    } else if (messageId.startsWith('bot-')) {
+      chatId = messageId.replace('bot-', '');
+    } else {
+      // For new messages that don't have the chat ID format
+      setMessages(prev => prev.filter(msg => msg.id !== messageId));
+      return;
+    }
+
+    // Remove both user and bot messages with the same chat ID
+    setMessages(prev => prev.filter(msg => 
+      msg.id !== `user-${chatId}` && msg.id !== `bot-${chatId}`
+    ));
   };
 
   const clearChatHistory = async () => {
@@ -275,8 +294,8 @@ const Chat = () => {
                     <div className="message-time">
                       {formatTime(message.timestamp)}
                     </div>
-                    {message.sender === 'bot' && (
-                      <div className="message-actions">
+                    <div className="message-actions">
+                      {message.sender === 'bot' && (
                         <button 
                           className="action-btn copy-btn"
                           onClick={() => copyMessage(message.text)}
@@ -285,16 +304,16 @@ const Chat = () => {
                           <Copy size={12} />
                           Copy
                         </button>
-                        <button 
-                          className="action-btn delete-btn"
-                          onClick={() => deleteMessage(message.id)}
-                          title="Delete message"
-                        >
-                          <Trash2 size={12} />
-                          Delete
-                        </button>
-                      </div>
-                    )}
+                      )}
+                      <button 
+                        className="action-btn delete-btn"
+                        onClick={() => deleteMessage(message.id)}
+                        title="Delete entire conversation"
+                      >
+                        <Trash2 size={12} />
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
