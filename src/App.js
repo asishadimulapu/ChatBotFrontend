@@ -4,17 +4,64 @@ import Chat from './components/Chat';
 import Login from './components/Login';
 import Register from './components/Register';
 import Navbar from './components/Navbar';
+import API from './api';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const handleStorageChange = () => {
-      setIsLoggedIn(!!localStorage.getItem('token'));
+    const verifyToken = async () => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        setIsLoggedIn(false);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        // Try to make a request to verify the token is valid
+        await API.get('/chats');
+        setIsLoggedIn(true);
+      } catch (error) {
+        // Token is invalid or expired
+        console.log('Token validation failed:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setIsLoggedIn(false);
+      } finally {
+        setIsLoading(false);
+      }
     };
+
+    verifyToken();
+
+    const handleStorageChange = () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setIsLoggedIn(false);
+      }
+    };
+    
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
+
+  // Show loading spinner while verifying token
+  if (isLoading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontSize: '18px'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <Router>

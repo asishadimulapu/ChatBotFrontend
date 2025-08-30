@@ -310,6 +310,14 @@ localStorage.clear();
 Authorization: Bearer <valid_jwt_token>
 ```
 
+**App Opens Chat Instead of Login Page**
+```javascript
+// This happens when there's an invalid token in localStorage
+// The app now automatically validates tokens on startup
+// If validation fails, it will redirect to login page
+// To manually clear: localStorage.removeItem('token');
+```
+
 **Build Errors**
 ```bash
 # Clear node_modules and reinstall
