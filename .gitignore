@@ -10,14 +10,24 @@
 
 # production
 /build
+dist/
+.cache/
 
 # misc
 .DS_Store
 .env
 .env.local
+.env.development
 .env.development.local
+.env.test
 .env.test.local
+.env.production
 .env.production.local
+.env.*
+
+# allow examples
+!.env.example
+!.env.*.example
 
 npm-debug.log*
 yarn-debug.log*
